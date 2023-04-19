@@ -44,7 +44,7 @@
   <script id="app-template" type="text/template">
     <div v-bind:class="{'sidebar-content': 1, 'bg-white': selectedPlace, 'bg-secondary': !selectedPlace}">
       <div v-if="promptVisible" class="d-flex flex-column justify-content-center align-items-center" style="height: 100%;">
-        <img class="d-block select-place-prompt mb-4" src="{% static 'hand-pointer-regular.svg' %}" alt="Select place">
+        <img class="d-block select-place-prompt mb-4" src={% static "hand-pointer-regular.svg" %} alt="Select place">
         <h4>Выберите место на карте</h4>
       </div>
 
@@ -60,7 +60,7 @@
         {% verbatim %}
         <h5 class="mb-3">{{ selectedPlace.title }}</h5>
 
-        <p>{{ selectedPlace.short_description }}</p>
+        <p>{{ selectedPlace.description_short }}</p>
         {% endverbatim %}
         <div id="place-photos" class="carousel slide mb-3 shadow" data-ride="carousel" data-interval="5000">
           <ol class="carousel-indicators">
@@ -87,7 +87,7 @@
           </template>
         </div>
 
-        <div v-html="selectedPlace.long_description"></div>
+        <div v-html="selectedPlace.description_long"></div>
       </div>
     </div>
   </script>
@@ -112,8 +112,7 @@
   <script src="https://unpkg.com/@ansur/leaflet-pulse-icon@0.1.1/dist/L.Icon.Pulse.js"></script>
 
   <script src="{% static 'leaflet-sidebar.js' %}"></script>
-
-  {% verbatim %}
+{% verbatim %}
   <script>
     var map = L.map('map');
     map.setView([55.753989, 37.623191], 11);
@@ -272,8 +271,8 @@
           title: data.title,
           placeId: placeId,
           imgs: data.imgs || [],
-          short_description: data.description_short,
-          long_description: data.description_long,
+          description_short: data.description_short,
+          description_long: data.description_long,
         };
       } finally {
         if (sidebarApp.loadingPlaceId == placeId){
