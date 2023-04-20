@@ -12,6 +12,9 @@ class Place(models.Model):
     longitude = models.FloatField('Долгота')
     latitude = models.FloatField('Широта')
 
+    class Meta(object):
+        ordering = ['title',]
+
     def __str__(self):
         return self.title
 
@@ -27,7 +30,7 @@ class Image(models.Model):
     position = models.PositiveIntegerField('Позиция', default=0)
 
     class Meta(object):
-        ordering = ['position']
+        ordering = ['position',]
 
     def __str__(self):
         return f'{self.place.title}'
