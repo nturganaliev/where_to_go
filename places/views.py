@@ -25,7 +25,7 @@ def index(request):
         features.append(feature)
     places_geojson = {
         'type': 'FeatureCollection',
-        'features' : features
+        'features': features
     }
 
     return render(
@@ -39,8 +39,8 @@ def place_details(request, pk):
         'title': place.title,
         'imgs': [
             image.image.url for image in place.images.order_by('position')
-        ], 
-        'description_short': place.description_short, 
+        ],
+        'description_short': place.description_short,
         'description_long': place.description_long,
         'coordinates': {
             'longitude': place.longitude,
@@ -48,5 +48,5 @@ def place_details(request, pk):
         }
     }
     return JsonResponse(
-        details, json_dumps_params={'ensure_ascii':False, 'indent': 2}
+        details, json_dumps_params={'ensure_ascii': False, 'indent': 2}
     )

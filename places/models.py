@@ -1,5 +1,3 @@
-from django.utils.safestring import mark_safe
-from django.utils.html import format_html
 from django.db import models
 
 from tinymce.models import HTMLField
@@ -13,7 +11,7 @@ class Place(models.Model):
     latitude = models.FloatField('Широта')
 
     class Meta(object):
-        ordering = ['title',]
+        ordering = ['title', ]
 
     def __str__(self):
         return self.title
@@ -30,15 +28,7 @@ class Image(models.Model):
     position = models.PositiveIntegerField('Позиция', default=0)
 
     class Meta(object):
-        ordering = ['position',]
+        ordering = ['position', ]
 
     def __str__(self):
         return f'{self.place.title}'
-
-    def image_preview(self):
-        width = 200
-        return format_html(
-            "<img src={} width={} />",
-            self.image.url,
-            width
-        )
