@@ -1,12 +1,11 @@
 from django.db import models
-
 from tinymce.models import HTMLField
 
 
 class Place(models.Model):
     title = models.CharField('Название', max_length=200)
-    description_short = models.TextField('Краткое описание')
-    description_long = HTMLField('Полное описание')
+    description_short = models.TextField('Краткое описание', blank=True)
+    description_long = HTMLField('Полное описание', blank=True)
     longitude = models.FloatField('Долгота')
     latitude = models.FloatField('Широта')
 
@@ -31,4 +30,4 @@ class Image(models.Model):
         ordering = ['position', ]
 
     def __str__(self):
-        return f'{self.place.title}'
+        return f'{self.position} - {self.place.title}'

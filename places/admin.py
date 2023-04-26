@@ -26,3 +26,17 @@ class PlaceAdmin(SortableAdminMixin, admin.ModelAdmin):
     inlines = [
         ImageInline,
     ]
+
+
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+    readonly_fields = ['image_preview', ]
+
+    @staticmethod
+    def image_preview(obj):
+        width = 200
+        return format_html(
+            "<img src={} width={} />",
+            obj.image.url,
+            width
+        )

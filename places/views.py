@@ -23,13 +23,13 @@ def index(request):
             }
         }
         features.append(feature)
-    places_geojson = {
+    places_geodata = {
         'type': 'FeatureCollection',
         'features': features
     }
 
     return render(
-        request, 'index.html', context={'places_geojson': places_geojson}
+        request, 'index.html', context={'places_geodata': places_geodata}
     )
 
 
