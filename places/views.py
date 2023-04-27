@@ -23,6 +23,7 @@ def index(request):
             }
         }
         features.append(feature)
+
     places_geodata = {
         'type': 'FeatureCollection',
         'features': features
