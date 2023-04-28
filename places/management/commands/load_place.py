@@ -14,32 +14,36 @@ class Command(BaseCommand):
             'file_url', type=str, help='Ссылка на данные с местом на карте'
         )
 
-    def handle(self, *args, **kwargs):
-        file_url = kwargs['file_url']
-
-        response = requests.get(file_url)
-        response.raise_for_status()
-        content = response.json()
-
-        new_place = Place.objects.create(
+    def handle_place(self, content):
+        new_place, _ = Place.objects.update_or_create(
             title=content['title'],
-            description_short=content['description_short'],
-            description_long=content['description_long'],
+            description_short=content.get('description_short', ''),
+            description_long=content.get('description_long', ''),
             longitude=content['coordinates']['lng'],
             latitude=content['coordinates']['lat']
         )
-        new_place.save()
+        return new_place
 
-        images_url = content['imgs']
+    def handle_images(self, content, new_place):
+        images_url = content.get('imgs', [])
         for index, image_url in enumerate(images_url, 1):
             image_name = image_url.split('/')[-1]
             image_response = requests.get(image_url)
             image_response.raise_for_status()
-            image = ContentFile(image_response.content)
-            new_image, _ = Image.objects.get_or_create(
+            image = ContentFile(
+                image_response.content,
+                name=image_name
+            )
+            new_image, _ = Image.objects.update_or_create(
                 place=new_place,
-                image=image_name,
+                image=image,
                 position=index,
             )
-            new_image.save()
-            new_image.image.save(image_name, image, save=True)
+
+    def handle(self, *args, **kwargs):
+        file_url = kwargs['file_url']
+        response = requests.get(file_url)
+        response.raise_for_status()
+        self.content = response.json()
+        self.new_place = self.handle_place(self.content)
+        self.handle_images(self.content, self.new_place)
