@@ -15,16 +15,16 @@ class Command(BaseCommand):
         )
 
     def handle_place(self, content):
-        new_place, _ = Place.objects.update_or_create(
+        place, _ = Place.objects.update_or_create(
             title=content['title'],
             description_short=content.get('description_short', ''),
             description_long=content.get('description_long', ''),
             longitude=content['coordinates']['lng'],
             latitude=content['coordinates']['lat']
         )
-        return new_place
+        return place
 
-    def handle_images(self, content, new_place):
+    def handle_images(self, content, place):
         images_url = content.get('imgs', [])
         for index, image_url in enumerate(images_url, 1):
             image_name = image_url.split('/')[-1]
@@ -34,8 +34,8 @@ class Command(BaseCommand):
                 image_response.content,
                 name=image_name
             )
-            new_image, _ = Image.objects.update_or_create(
-                place=new_place,
+            image, _ = Image.objects.update_or_create(
+                place=place,
                 image=image,
                 position=index,
             )
@@ -44,6 +44,6 @@ class Command(BaseCommand):
         file_url = kwargs['file_url']
         response = requests.get(file_url)
         response.raise_for_status()
-        self.content = response.json()
-        self.new_place = self.handle_place(self.content)
-        self.handle_images(self.content, self.new_place)
+        content = response.json()
+        place = self.handle_place(content)
+        self.handle_images(content, place)

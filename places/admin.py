@@ -1,28 +1,19 @@
 from django.contrib import admin
-from django.utils.html import format_html
-from adminsortable2.admin import SortableAdminMixin
+from adminsortable2.admin import SortableAdminBase
 from adminsortable2.admin import SortableInlineAdminMixin
 
 from .models import Image, Place
+from .image_preview import image_preview
 
 
 class ImageInline(SortableInlineAdminMixin, admin.TabularInline):
     model = Image
     extra = 1
-    readonly_fields = ['image_preview', ]
-
-    @staticmethod
-    def image_preview(obj):
-        width = 200
-        return format_html(
-            "<img src={} width={} />",
-            obj.image.url,
-            width
-        )
+    readonly_fields = [image_preview, ]
 
 
 @admin.register(Place)
-class PlaceAdmin(SortableAdminMixin, admin.ModelAdmin):
+class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     inlines = [
         ImageInline,
     ]
@@ -30,13 +21,4 @@ class PlaceAdmin(SortableAdminMixin, admin.ModelAdmin):
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
-    readonly_fields = ['image_preview', ]
-
-    @staticmethod
-    def image_preview(obj):
-        width = 200
-        return format_html(
-            "<img src={} width={} />",
-            obj.image.url,
-            width
-        )
+    readonly_fields = [image_preview, ]
