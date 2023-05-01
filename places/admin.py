@@ -14,9 +14,7 @@ class ImageInline(SortableInlineAdminMixin, admin.TabularInline):
 
 @admin.register(Place)
 class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
-    inlines = [
-        ImageInline,
-    ]
+    inlines = [ImageInline, ]
 
 
 @admin.register(Image)
