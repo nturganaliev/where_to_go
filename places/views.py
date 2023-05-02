@@ -14,12 +14,12 @@ def index(request):
             'type': 'Feature',
             'geometry': {
                 'type': 'Point',
-                'coordinates': [place.longitude, place.latitude],
+                'coordinates': [place.longitude, place.latitude, ],
             },
             'properties': {
                 'title': place.title,
                 'placeId': place.id,
-                'detailsUrl': reverse('place_details', args=(place.id,))
+                'detailsUrl': reverse('place_details', args=(place.id, ))
             }
         }
         features.append(feature)
@@ -30,7 +30,7 @@ def index(request):
     }
 
     return render(
-        request, 'index.html', context={'places_geodata': places_geodata}
+        request, 'index.html', context={'places_geodata': places_geodata, }
     )
 
 
@@ -45,8 +45,8 @@ def place_details(request, pk):
         'description_long': place.description_long,
         'coordinates': {
             'longitude': place.longitude,
-            'latitude': place.latitude
-        }
+            'latitude': place.latitude,
+        },
     }
     return JsonResponse(
         details, json_dumps_params={'ensure_ascii': False, 'indent': 2}
