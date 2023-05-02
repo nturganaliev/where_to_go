@@ -30,7 +30,7 @@ def index(request):
     }
 
     return render(
-        request, 'index.html', context={'places_geodata': places_geodata, }
+        request, 'index.html', context={'places_geodata': places_geodata}
     )
 
 

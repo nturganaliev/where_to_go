@@ -10,7 +10,7 @@ class Place(models.Model):
     latitude = models.FloatField('Широта')
 
     class Meta(object):
-        ordering = ['title', ]
+        ordering = ['title']
 
     def __str__(self):
         return self.title
@@ -22,12 +22,12 @@ class Image(models.Model):
         Place,
         on_delete=models.CASCADE,
         verbose_name='Место',
-        related_name='images'
+        related_name='images',
     )
     position = models.PositiveIntegerField('Позиция', default=0)
 
     class Meta(object):
-        ordering = ['position', ]
+        ordering = ['position']
 
     def __str__(self):
         return f'{self.position} - {self.place.title}'
